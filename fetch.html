@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* .movie_div{
+        display: grid;
+        padding: 5%;
+        grid-template-columns: repeat(4);
+        gap: 5%;
+    } */
+    </style>
+</head>
+<body>
+    <input type="text" id="search" placeholder="Search Movies">
+    <button onclick="search_movie()"> search</button>
+    <div id="movie_div"></div>
+</body>
+</html>
+<script>
+    function search_movie() {
+        
+    
+    let movie = document.getElementById("search").value;
+    //http://www.omdbapi.com/?i=tt3896198&apikey=403b26da
+    fetch(`http://www.omdbapi.com/?t=${movie}&apikey=403b26da`)
+    .then(function (response) {
+        return response.json()
+    })
+    .then(function (res) {
+        console.log(res)
+        if(res.Response == "True"){
+            let movie_div = document.getElementById("movie_div")
+            let image = document.createElement("img")
+            image.src = `${res.Poster}`
+            image.style.width = "100px"
+            let div = document.createElement("div")
+            if(Number(res.imdbRating)<= 8.2){
+            div.innerHTML = `<p>${res.Title}</p><p><b>Released:</b> ${res.Released}</p><p><b>IMDB Rating:</b> ${res.imdbRating}</p>`
+            }else{
+                div.innerHTML = `<p>${res.Title}</p><p><b>Released:</b> ${res.Released}</p><p><b>IMDB Rating:</b> ${res.imdbRating}</p><p><b style ="color:green">Recommended</b></p>`
+            }
+            //div.setAttribute("class","movie_div")
+            movie_div.append(image,div)
+        }else{
+            let movie_div = document.getElementById("movie_div")
+        let error_div = document.createElement("img")
+        error_div.src = "https://2.bp.blogspot.com/-X9sVvOD0hrs/W5cz8WKyknI/AAAAAAAAEKI/s6mNIUQdsy4KGnCgtF1VSZlnj237ArxawCLcBGAs/s1600/not%2Bfound.gif";
+        error_div.style.marginLeft = "500px";
+        error_div.style.marginTop = "100px"
+        movie_div.append(error_div)
+        }
+    })
+    .catch(function (error) {
+        console.log(error)
+    });
+
+    movie_div.innerHTML = null
+
+}
+</script>
