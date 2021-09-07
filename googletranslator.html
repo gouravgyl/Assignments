@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="margin-left: 590px;">Translator</h1>
+    <div style="margin-left: 580px;">
+        <label>Select a Language</label>
+    <select  style="width: 100px;" name="select a language" id="languages">
+        <option value="en">english</option>
+        <option value="ar">Arabic</option>
+        <option value="zh">Chinize</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="hi">hindi</option>
+        <option value="id">Indonesian</option>
+        <option value="ga">Irish</option>
+        <option value="it">Italian</option>
+        <option value="ko">Korean</option>
+        <option value="es">spanish</option>
+        <option value="tr">Turkish</option>
+        <option value="ru">Russian</option>
+    </select>
+    </div>
+    <div style="display: flex;">
+    <input style="width: 300px;height: 300px;margin-left: 300px; margin-top: 50px; font-size: 20px; padding: 10px; background-color: black; color: white; border-radius: 20px; outline: none;" type="text" id="inp_text" placeholder="enter text...">
+    <div style="width: 300px;height: 170px; border: solid black; margin-top: 50px; margin-left: 100px; font-size: 20px;text-align: center; padding-top: 150px; border-radius: 20px; color: black; background-color: white; font-weight: bold;" id="out"></div>
+    </div>
+    <button style="padding: 15px; margin-left: 630px; margin-top: 30px; border-radius: 10px; background-color: white;color: black; font-weight: bold;" onclick="bhola()">Translate</button>
+    
+</body>
+</html>
+<script>
+    
+    
+    async function searchMovies(text,lan) {
+        const res = await fetch("https://libretranslate.de/translate", {
+                method: "POST",
+                body: JSON.stringify({
+                    q: `${text}`,
+                    source: "en",
+                    target: `${lan}`
+                }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            let gou = await res.json();
+           // console.log(gou.translatedText);
+           let out = document.getElementById("out");
+           out.innerHTML = `${gou.translatedText}`
+            
+        }
+        function bhola() {
+            let inp_text = document.getElementById("inp_text").value;
+            let lan = document.getElementById("languages").value;
+    
+            searchMovies(inp_text,lan)
+        }
+</script>
